@@ -68,12 +68,15 @@ class MenuController
   def select_entry
     system "clear"
     print "select entry number: "
-    selection = gets.chomp
-    if @address_book.entries.fetch[selection] != []
-      puts @address_book.entries.fetch[selection].to_s
+    selection = gets.chomp.to_i
+    if @address_book.entries.fetch(selection, nil) != nil
+      puts @address_book.entries.fetch(selection).to_s
+      system "clear"
+      main_menu
     else
       puts "No entry matching that number"
-      select_entry
+      system "clear"
+      main_menu
     end
   end
 
