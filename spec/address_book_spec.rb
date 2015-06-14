@@ -112,15 +112,53 @@ RSpec.describe AddressBook do
       book.import_from_csv("entries_2.csv")
       entry_two = book.entries[1]
 
-      check_entry(entry_two, "Joe", "111-111-111", "joe@gmail.com")
+      check_entry(entry_two, "Peter", "111-111-111", "peter@gmail.com")
     end    
 
     it "imports the 3rd entry" do
       book.import_from_csv("entries_2.csv")
       entry_three = book.entries[2]
 
-      check_entry(entry_three, "John", "111-111-111", "john@gmail.com")
+      check_entry(entry_three, "Pope", "111-111-111", "pope@gmail.com")
     end
+  end
+
+  context ".binary_search" do 
+    it "searches the address book for a non-existant entry" do
+      book.import_from_csv("entries_2.csv")
+      search = book.binary_search("Francis")
+
+      expect(search).to be_nil
+    end
+
+    it "searches the address book for James" do
+      book.import_from_csv("entries_2.csv")
+      search = book.binary_search("James")
+      expect search.instance_of?(Entry)
+      check_entry(search, "James", "111-111-111", "james@gmail.com")
+    end
+
+    it "searches the address book for Peter" do
+      book.import_from_csv("entries_2.csv")
+      search = book.binary_search("Peter")
+      expect search.instance_of?(Entry)
+      check_entry(search, "Peter", "111-111-111", "peter@gmail.com")
+    end
+
+    it "searches the address book for Pope" do 
+      book.import_from_csv("entries_2.csv")
+      search = book.binary_search("Pope")
+      expect search.instance_of?(Entry)
+      check_entry(search, "Pope", "111-111-111", "pope@gmail.com")
+    end
+
+    it "searches the address book for Popes" do
+      book.import_from_csv("entries_2.csv")
+      search = book.binary_search("Popes")
+      expect search.instance_of?(Entry)
+      expect(search).to be_nil
+    end
+
   end
 
 end
