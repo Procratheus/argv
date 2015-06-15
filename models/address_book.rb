@@ -38,10 +38,10 @@ class AddressBook
 
   def binary_search(name)
     lower = 0
-    upper = @entries.length-1
+    upper = @entries.length - 1
 
     while lower <= upper
-      mid = (upper + lower)/2
+      mid = (upper + lower) / 2
       mid_name = @entries[mid].name
 
       if name == mid_name
@@ -50,6 +50,23 @@ class AddressBook
         upper = mid - 1
       elsif name > mid_name
         lower = mid + 1
+      end
+    end
+    return nil
+  end
+
+  def iterative_search(name)
+    start = 0
+    finish = @entries.length - 1
+
+    while start <= finish
+      pos = start
+      position_name = @entries[pos].name
+
+      if name == position_name
+        return @entries[pos]
+      else
+        start = pos + 1
       end
     end
     return nil
