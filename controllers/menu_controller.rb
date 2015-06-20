@@ -102,7 +102,22 @@ class MenuController
   end
 
   def read_csv
+    print "Enter a file name to import: "
+    file_name = gets.chomp
 
+    if file_name.empty?
+      system "clear"
+      puts "No file name to read"
+      main_menu
+    end
+
+    begin
+      @address_book.import_from_csv(file_name)
+      puts "Your imported #{@address_book.count} entries from #{file_name}"
+    rescue
+      puts "#{file_name} is not a vaild file. Please try again."
+      read_csv
+    end
   end
 
   def entry_submenu(entry)
@@ -116,7 +131,10 @@ class MenuController
     case selection
     when "n"
     when "d"
+      delete_entry(entry)
     when "e"
+      edit_entry(entry)
+      entry_submenu(entry)
     when "m"
       system "clear"
       main_menu
@@ -126,6 +144,42 @@ class MenuController
       entries_submenu(entry)
     end
 
+  end
+
+  def delete_entry(entry)
+    @address_book.entries.delete(entry)
+    puts "#{entry.name} has been deleted."
+  end
+
+  def edit_entry(entry)
+    print "Update name: "
+    name = gets.chomp
+    print "Update number: "
+    number = gets.chomp
+    print "Update email: "
+    email = gets.chomp
+
+    entry.name = name if !name.empty?
+    entry.number = number if !number.empty?
+    entry.email = email if !email.empty?
+
+    system "clear"
+    puts "Updated entry."
+    puts entry
+  end
+
+  def search(name)
+    print "Enter name: "
+    name = gets.chomp
+
+    entry = @address_book.binary_search(name)
+    system "clear"
+
+    if entry
+      puts entry.to_s
+      search_submenu(match)
+    else
+      puts "Your serach di not return a match"
   end
 
 end
